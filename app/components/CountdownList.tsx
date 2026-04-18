@@ -53,6 +53,7 @@ export default function CountdownList({ accessToken }: CountdownProps) {
   }, [accessToken])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchEventos()
   }, [fetchEventos])
 
