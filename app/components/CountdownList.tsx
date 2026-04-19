@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useRef } from "react"
+import { signOut } from "next-auth/react"
 import CrearEvento from "./CrearEvento"
 
 interface Evento {
@@ -43,10 +44,25 @@ export default function CountdownList({ accessToken }: CountdownProps) {
   const [editStart, setEditStart] = useState("")
   const [guardando, setGuardando] = useState(false)
   const [eliminandoId, setEliminandoId] = useState<string | null>(null)
+  const editDateInputRef = useRef<HTMLInputElement>(null)
 
   const fetchEventos = useCallback(async () => {
     setCargando(true)
-    const res = await fetch(`/api/eventos?accessToken=${accessToken}`)
+    let res: Response
+    try {
+      res = await fetch(`/api/eventos?accessToken=${accessToken}`)
+    } catch {
+      setCargando(false)
+      return
+    }
+    if (res.status === 401) {
+      signOut({ callbackUrl: "/login" })
+      return
+    }
+    if (!res.ok) {
+      setCargando(false)
+      return
+    }
     const data = await res.json()
     setEventos(data.eventos || [])
     setCargando(false)
@@ -80,7 +96,7 @@ export default function CountdownList({ accessToken }: CountdownProps) {
     setEditStart(fecha)
   }
 
-  async function handleEditar(e: React.FormEvent) {
+  async function handleEditar(e: React.SyntheticEvent) {
     e.preventDefault()
     if (!editandoId) return
     setGuardando(true)
@@ -148,13 +164,23 @@ export default function CountdownList({ accessToken }: CountdownProps) {
 
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Fecha y hora</label>
-                  <input
-                    type="datetime-local"
-                    value={editStart}
-                    onChange={(e) => setEditStart(e.target.value)}
-                    required
-                    className="w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
+                  <div className="flex gap-2">
+                    <input
+                      ref={editDateInputRef}
+                      type="datetime-local"
+                      value={editStart}
+                      onChange={(e) => setEditStart(e.target.value)}
+                      required
+                      className="flex-1 bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => editDateInputRef.current?.blur()}
+                      className="bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-lg text-sm transition"
+                    >
+                      OK
+                    </button>
+                  </div>
                 </div>
 
                 <div className="flex gap-3">
