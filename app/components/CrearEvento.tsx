@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState } from "react"
+import DateTimePicker from "./DateTimePicker"
 
 interface Props {
   accessToken: string
@@ -13,7 +14,6 @@ export default function CrearEvento({ accessToken, onCreado }: Props) {
   const [start, setStart] = useState("")
   const [cargando, setCargando] = useState(false)
   const [error, setError] = useState("")
-  const dateInputRef = useRef<HTMLInputElement>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -68,23 +68,7 @@ export default function CrearEvento({ accessToken, onCreado }: Props) {
 
       <div>
         <label className="block text-sm text-gray-400 mb-1">Fecha y hora</label>
-        <div className="flex gap-2">
-          <input
-            ref={dateInputRef}
-            type="datetime-local"
-            value={start}
-            onChange={(e) => setStart(e.target.value)}
-            required
-            className="flex-1 bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-          />
-          <button
-            type="button"
-            onClick={() => dateInputRef.current?.blur()}
-            className="bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-lg text-sm transition"
-          >
-            OK
-          </button>
-        </div>
+        <DateTimePicker value={start} onChange={setStart} required />
       </div>
 
       {error && <p className="text-red-400 text-sm">{error}</p>}

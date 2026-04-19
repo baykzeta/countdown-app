@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useState, useCallback, useRef } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { signOut } from "next-auth/react"
 import CrearEvento from "./CrearEvento"
+import DateTimePicker from "./DateTimePicker"
 
 interface Evento {
   id: string
@@ -44,7 +45,6 @@ export default function CountdownList({ accessToken }: CountdownProps) {
   const [editStart, setEditStart] = useState("")
   const [guardando, setGuardando] = useState(false)
   const [eliminandoId, setEliminandoId] = useState<string | null>(null)
-  const editDateInputRef = useRef<HTMLInputElement>(null)
 
   const fetchEventos = useCallback(async () => {
     setCargando(true)
@@ -164,23 +164,7 @@ export default function CountdownList({ accessToken }: CountdownProps) {
 
                 <div>
                   <label className="block text-sm text-gray-400 mb-1">Fecha y hora</label>
-                  <div className="flex gap-2">
-                    <input
-                      ref={editDateInputRef}
-                      type="datetime-local"
-                      value={editStart}
-                      onChange={(e) => setEditStart(e.target.value)}
-                      required
-                      className="flex-1 bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => editDateInputRef.current?.blur()}
-                      className="bg-gray-600 hover:bg-gray-500 text-white px-3 py-2 rounded-lg text-sm transition"
-                    >
-                      OK
-                    </button>
-                  </div>
+                  <DateTimePicker value={editStart} onChange={setEditStart} required ringColor="blue" />
                 </div>
 
                 <div className="flex gap-3">
