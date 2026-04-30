@@ -29,11 +29,11 @@ const DateTimePicker = memo(function DateTimePicker({ value, onChange, required,
   const CustomContainer = ({ className, children }: { className: string; children: React.ReactNode }) => (
     <div className="rounded-lg overflow-hidden shadow-xl">
       <CalendarContainer className={className}>{children}</CalendarContainer>
-      <div className="bg-gray-900 flex justify-end px-3 py-2 border-t border-gray-700">
+      <div className="bg-white dark:bg-gray-900 flex justify-end px-3 py-2 border-t border-slate-200 dark:border-gray-700">
         <button
           type="button"
           onClick={() => ref.current?.setOpen(false)}
-          className="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-1.5 rounded-lg transition"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-1.5 rounded-lg transition"
         >
           Aceptar
         </button>
@@ -56,7 +56,7 @@ const DateTimePicker = memo(function DateTimePicker({ value, onChange, required,
       shouldCloseOnSelect={false}
       calendarContainer={CustomContainer}
       required={required}
-      className={`w-full bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-${ringColor}-500`}
+      className={`w-full bg-slate-100 dark:bg-gray-700 text-slate-800 dark:text-white border border-slate-200 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-${ringColor}-500`}
       wrapperClassName="w-full"
     />
   )

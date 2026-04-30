@@ -8,8 +8,8 @@ import SessionProvider from "./components/SessionProvider"
 const geist = Geist({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Countdown App",
-  description: "Cuentas regresivas desde Google Calendar",
+  title: "TokiToki",
+  description: "Tu tiempo, tus momentos.",
 }
 
 export default async function RootLayout({

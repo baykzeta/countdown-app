@@ -40,5 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# custom
-credenciales.txt
+# sensibles
+docs/secrets/
